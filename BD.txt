@@ -1,0 +1,25 @@
+CREATE TABLE Persona (
+    PersonaID SERIAL PRIMARY KEY,
+    Nombre VARCHAR(50) NOT NULL,
+    Apellido VARCHAR(50) NOT NULL,
+    FechaNacimiento DATE,
+    CI VARCHAR(20) UNIQUE
+);
+CREATE SEQUENCE cuenta_id_sequence START 1000000;
+
+CREATE TABLE CuentaBancaria (
+    CuentaID BIGINT PRIMARY KEY DEFAULT nextval('cuenta_id_sequence'),
+    PersonaID INT REFERENCES Persona(PersonaID),
+    TipoCuenta VARCHAR(50) NOT NULL,
+    Saldo DECIMAL(18, 2) NOT NULL,
+    FechaApertura DATE
+);
+
+CREATE TABLE TransaccionesBancarias (
+    TransaccionID SERIAL PRIMARY KEY,
+    CuentaID INT REFERENCES CuentaBancaria(CuentaID),
+    FechaTransaccion DATE,
+    TipoTransaccion VARCHAR(50) NOT NULL,
+    Monto DECIMAL(18, 2) NOT NULL,
+    Descripcion VARCHAR(255)
+);
